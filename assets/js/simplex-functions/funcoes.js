@@ -186,7 +186,7 @@ function criarForm(p_variaveis, p_restricoes) {
 
             aux += 10;
 
-            $("#global-row-"+(i+1)).append("<span class=\"px-3\"></span><div class=\"input-group-append\"><span class=\"input-group-text\"> &#8804; </span></div><input type=\"text\" class=\"input form-control\" required size='5' maxlength='10' id='b"+i+"' name='b"+i+"'>");
+            $("#global-row-"+(i+1)).append("<span class=\"px-3\"></span><div class=\"input-group-append\"><span class=\"input-group-text\"> &#8804; </span></div><input type=\"numer\" class=\"input form-control\" required size='5' maxlength='10' id='b"+i+"' name='b"+i+"'>");
 
         }
 
