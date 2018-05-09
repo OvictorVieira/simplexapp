@@ -1,1 +1,13 @@
-{}
+{
+	"name" : "victor/cart",
+	"require-dev" : {
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Victor\\Cart\\":"scr/"
+		}
+	},
+	"require": {
+		"phpunit/phpunit": "^7.1"
+	}
+}
