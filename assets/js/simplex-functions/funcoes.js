@@ -131,12 +131,12 @@ function atualizar() {
 function criarForm(p_variaveis, p_restricoes) {
 
 	if (p_variaveis == "" || p_variaveis <= 0 || p_variaveis != parseInt(p_variaveis)) {
-		alert('Preencha o campo com a quantidade de variáveis.');
+		alert('A quantidade de variáveis precisa ser maior que 0!');
 		form1.variaveis.focus();
 		return;
 	} else {
 		if (p_restricoes == "" || p_restricoes <= 0 || p_restricoes != parseInt(p_restricoes)) {
-			alert('Preencha o campo com a quantidade de restrições.');
+			alert('A quantidade de restrições precisa ser maior que 0!');
 			form1.regras.focus();
 			return;
 		}
@@ -161,7 +161,7 @@ function criarForm(p_variaveis, p_restricoes) {
 		$("#form2").css('display','block');
         $("#aqui").html("<div class=\"row\"><div id='global-row-1' class=\""+col_offset+qtd_columns+col_offset+" my-4 input-group d-flex text-center text-muted\"></div></div>");
 
-        $("#global-row-1").append("<div class=\"input-group-prepend\"><span class=\"input-group-text\">Z = </span></div>");
+        $("#global-row-1").append("<div class=\"input-group-prepend\"><span class=\"input-group-text\">Max Z = </span></div>");
 
         // Função de Z -- O laço roda o número de vezes o usuario digitou
 		for (var h = 1; h <= p_variaveis; h++) {
@@ -190,10 +190,10 @@ function criarForm(p_variaveis, p_restricoes) {
 
         }
 
-		document.getElementById("btn1").style.display = 'none';
+		document.getElementById("form1").style.display = 'none';
 		document.getElementById("in1").disabled = true;
 		document.getElementById("in2").disabled = true;
-		$('#box-buttons-solve').css('display','block');
+		$('#box-buttons-solve').css('display','flex');
 		$('#hr-pos-box-buttons-solve').css('display','block');
 		//document.getElementById('y1').focus();
 	}
@@ -282,8 +282,9 @@ function resolver() {
     }
     esconder(variaveis, restricoes);
 
-    document.getElementById("btn2").style.display = 'none';
-    document.getElementById("btn3").style.display = 'none';
+    // document.getElementById("btn2").style.display = 'none';
+    // document.getElementById("btn3").style.display = 'none';
+    document.getElementById("form2").style.display = 'none';
     document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
     document.getElementById("tab").innerHTML+="<hr/>";
     document.getElementById("tab").innerHTML+="<h4>Tabela Inicial</h4><br>";
