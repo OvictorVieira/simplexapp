@@ -16,6 +16,7 @@ function calcMatriz(p_matriz) {
 	// Escolhendo qual colocar como variável básica
 	var maior = p_matriz[nLinhas][1];
 	indMaior = 1;
+
 	for (j = 2; j <= nColunas; j++) {
 		if (p_matriz[nLinhas][j] > maior) {
 			maior = p_matriz[nLinhas][j];
@@ -33,12 +34,13 @@ function calcMatriz(p_matriz) {
 			indMenor = k;
 		}
 	}
+
 	var v_in = p_matriz[0][indMaior];
 	var v_out = p_matriz[indMenor][0];
-	//document.getElementById("tab").innerHTML+="<p>Troca Base: Entra "+v_in.substr(0,1)+"<sub>"+v_in.substr(1,1)+"</sub> e Sai "+v_out.substr(0,1)+"<sub>"+v_out.substr(1,1)+"</sub></p>";
+	document.getElementById("tab").innerHTML+="<p id='iteracoes'>Abaixo, na Base: Entra <strong>"+v_in.substr(0,1)+"<sub>"+v_in.substr(1,1)+"</sub></strong> e Sai <strong>"+v_out.substr(0,1)+"<sub>"+v_out.substr(1,1)+"</sub></strong></p>";
 	p_matriz[indMenor][0] = p_matriz[0][indMaior];
 	
-	//printTabela(p_matriz);
+	printTabela(p_matriz);
 
 	// Deixando o valor da nova variável básica == 1
 	var aux = p_matriz[indMenor][indMaior];
@@ -48,8 +50,8 @@ function calcMatriz(p_matriz) {
 		}
 		var fracao = new Fraction(1/aux);
 		var numFormatado = fracao.toFraction();
-		//document.getElementById("tab").innerHTML+="<p>Linha "+indMenor+" = Linha "+indMenor+" * "+numFormatado+"</p>";
-		//printTabela(p_matriz);
+		document.getElementById("tab").innerHTML+="<p>Linha "+indMenor+" = Linha "+indMenor+" * "+numFormatado+"</p>";
+		printTabela(p_matriz);
 	}
 
 	// Zerando os outros valores na coluna da nova variável básica
@@ -61,8 +63,8 @@ function calcMatriz(p_matriz) {
 			}
 			var fracao = new Fraction(-1*aux);
 			var numFormatado = fracao.toFraction();
-			//document.getElementById("tab").innerHTML+="<p>Linha "+i+" = Linha "+i+" + ("+numFormatado+") * Linha "+indMenor+"</p>";
-			//printTabela(p_matriz);
+			document.getElementById("tab").innerHTML+="<p>Linha "+i+" = Linha "+i+" + ("+numFormatado+") * Linha "+indMenor+"</p>";
+			printTabela(p_matriz);
 		}
 	}
 }
@@ -180,13 +182,11 @@ function criarForm(p_variaveis, p_restricoes) {
 			// O laço roda o número de vezes o usuario digitou
             for (var j = 1; j <= p_variaveis; j++) {
                 $("#global-row-"+(i+1)).append("<span class=\"px-3\"></span> <input type='number' class=\"input form-control\" required autocomplete='off' size='5' maxlength='10' step='0.1' id='x"+(aux + j)+"' name='x"+(aux + j)+"' /><div class=\"input-group-append\"><span class=\"input-group-text\"> X<sub>"+j+"</sub></span></div>");
-
-                //document.getElementById("aqui").innerHTML+=" + <input type='number' class='input' required autocomplete='off' size='5' maxlength='10' step='0.1' id='x"+i+j+"' name='x"+i+j+"' />x<sub>"+j+"</sub>";
             }
 
             aux += 10;
 
-            $("#global-row-"+(i+1)).append("<span class=\"px-3\"></span><div class=\"input-group-append\"><span class=\"input-group-text\"> &#8804; </span></div><input type=\"numer\" class=\"input form-control\" required size='5' maxlength='10' id='b"+i+"' name='b"+i+"'>");
+            $("#global-row-"+(i+1)).append("<span class=\"px-3\"></span><div class=\"input-group-append\"><span class=\"input-group-text\"> &#8804; </span></div><input type=\"numer\" class=\"input form-control\" autocomplete='off' required size='5' maxlength='10' id='b"+i+"' name='b"+i+"'>");
 
         }
 
@@ -230,11 +230,20 @@ function printTabela(p_matriz) {
 	}
 
 	thead.appendChild(tr);
-	
+
+	var chegou_noZ = false;
+
 	for(var n = 1; n <= linhas; n++) {
+
 		var tr = document.createElement("tr");
 		for(var o = 0; o <= colunas; o++) {
+
 			var variavel = p_matriz[n][o];
+
+            if(variavel == 'Z') {
+                chegou_noZ = true;
+            }
+
 			var td = document.createElement("td");
 
 			if (o == 0 && n < linhas) {
@@ -247,10 +256,23 @@ function printTabela(p_matriz) {
 				b.insertBefore(texto, b.firstChild);
 				td.appendChild(b);
 			} else {
-				if (variavel != '-Z') {
+				if (variavel != 'Z') {
 					var fracao = new Fraction(variavel);
 					variavel = fracao.toFraction();
-					var texto = document.createTextNode(variavel);
+
+                    // Verificar se está na linha de Z
+                    if(chegou_noZ) {
+                    	var aux = (-1 * variavel);
+                    	if (aux == -0) {
+                    		aux = 0;
+						}
+						console.log(aux);
+                        var texto = document.createTextNode(aux);
+                    }
+                    else {
+                        var texto = document.createTextNode(variavel);
+					}
+
 					// Printa o valor da linha Z
 					td.appendChild(texto);
 				} else {
@@ -280,18 +302,18 @@ function resolver() {
     if (validarCoeficientes(variaveis, restricoes) == 1) {
         return;
     }
+
     esconder(variaveis, restricoes);
 
-    // document.getElementById("btn2").style.display = 'none';
-    // document.getElementById("btn3").style.display = 'none';
     document.getElementById("form2").style.display = 'none';
     document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
     document.getElementById("tab").innerHTML+="<hr/>";
     document.getElementById("tab").innerHTML+="<h4>Tabela Inicial</h4><br>";
     matriz = [[]];
-    matriz[0][0] = 'VB';
+    matriz[0][0] = 'Base';
 
     var indice = 1;
+
     for (var l = 1; l <= variaveis; l++) {
         matriz[0][indice] = "x"+indice;
         indice++;
@@ -301,7 +323,7 @@ function resolver() {
         indice++;
     }
 
-    matriz[0][matriz[0].length] = 'b';
+    matriz[0][matriz[0].length] = 'B';
 
     // Adicionando linhas com as variavéis básicas. Ex: 'f1', 'f2'
     var x = document.querySelectorAll(".input");
@@ -327,12 +349,17 @@ function resolver() {
     }
 
 
-    // Adicionando a última linha '-Z'
+    // Adicionando a última linha 'Z'
     var z = document.querySelectorAll(".inputZ");
     coluna = 0;
-    matriz.push(['-Z']);
+    // antigo
+    matriz.push(['Z']);
+    //matriz.push(['Z']);
     for (var l = 0; l < variaveis; l++) {
-        matriz[linhas][l+1] = parseFloat(z[l].value.replace(",","."));
+        matriz[linhas][l+1] = (parseFloat(z[l].value.replace(",",".")));
+
+		// Printa a linha Z negativo
+        //matriz[linhas][l+1] = (-1 * (parseFloat(z[l].value.replace(",","."))));
     }
     coluna = variaveis + 1;
     for (var m = 1; m <= restricoes; m++) {
@@ -344,8 +371,10 @@ function resolver() {
     printTabela(matriz);
 
     var ite = 1;
+
     while (condicaoParada(matriz)) {
-        //document.getElementById("tab").innerHTML+="<p><b>Iteração "+ite+"</b></p>";
+        document.getElementById("tab").innerHTML+="<div class='my-5 mx-3'><hr/></div>";
+        document.getElementById("tab").innerHTML+="<p><b>Iteração "+ite+"</b></p>";
         calcMatriz(matriz);
         ite++;
     }
@@ -376,9 +405,10 @@ function resolver() {
         document.getElementById("btn4").style.display = 'block';
 	}
 	else {
+    	$('#box-btns-slider').css('display','flex');
         solucao += " e Z = "+z;
         document.getElementById("tab").innerHTML+="<br><hr/>";
-        document.getElementById("tab").innerHTML+="<p class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
+        document.getElementById("tab").innerHTML+="<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
         document.getElementById("btn4").style.display = 'block';
 	}
 }
