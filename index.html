@@ -36,6 +36,7 @@
                 </div>
             </nav>
         </header>
+
         <section>
             <div class="container-fluid">
                 <div class="row py-title-custom">
@@ -66,24 +67,26 @@
 
                 <form name="form1" id="form1">
                     <div class="row">
-                        <div class="offset-md-4 col-md-4 offset-md-4 d-flex justify-content-start text-center text-muted">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 d-flex justify-content-between text-center text-muted">
                             <div class="form-check py-3">
                                 <a class="link-maximize" href="">
-                                    <input class="form-check-input" type="radio" name="maximize" id="maximize" value="maximize" checked>
+                                    <input class="form-check-input" type="radio" name="simplex" id="maximize" value="maximize" checked>
                                     <label class="form-check-label" for="maximize">
                                         <strong>Maximizar</strong>
                                     </label>
                                 </a>
                             </div>
-                            <div style="display: none;" class="form-check py-3 ml-3">
+                            <div class="form-check py-3 ml-3">
                                 <a class="link-minimize" href="">
-                                    <input class="form-check-input" type="radio" name="minimize" id="minimize" value="minimize">
+                                    <input class="form-check-input" type="radio" name="simplex" id="minimize" value="minimize">
                                     <label class="form-check-label" for="minimize">
                                         <strong>Minimizar</strong>
                                     </label>
                                 </a>
                             </div>
                         </div>
+                        <div class="col-md-4"></div>
                     </div>
                     <div class="row">
                         <div class="offset-md-4 col-md-4 offset-md-4 d-flex justify-content-start text-center text-muted">
@@ -100,7 +103,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="offset-md-8 col-md-2 offset-md-2 d-flex justify-content-around">
+                        <div class="offset-md-7 col-md-3 offset-md-2 d-flex justify-content-around">
                             <button type="button" class="btn btn-primary" id="btn1" name="ok" value="ok" onClick="criarForm(variaveis.value,regras.value,)">
                                 <a href="#in1" class="js-scroll-trigger">Avançar</a>
                             </button>
@@ -110,35 +113,13 @@
 
                 <form action="" method="post" name="form2" id="form2" style="display:block;">
 
-                    <div id="aqui">
-
-                        <div class="row" style="display: none;">
-                            <!--
-                            <div class="offset-md-3 col-md-6 offset-md-3 my-4 input-group d-flex text-center text-muted">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Z = </span>
-                                </div>
-
-                                <span class="px-3"></span>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"> X¹ </span>
-                                </div>
-
-                                <span class="px-3"></span>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"> X² </span>
-                                </div>
-
-                                <span class="px-3"></span>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"> X³ </span>
-                                </div>
-                            </div>
-                            -->
+                    <div id="box-table-final" class="row" style="display: none;">
+                        <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
+                            <div id="resultado-final" class="table-responsive"></div>
                         </div>
+                    </div>
+
+                    <div id="aqui">
 
                         <hr class="line-breaking">
 
@@ -220,10 +201,10 @@
 
             </div>
         </section>
+
         <footer>
 
         </footer>
-
 
         <!-- Simplex Functions -->
 

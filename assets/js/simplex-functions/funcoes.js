@@ -1,12 +1,53 @@
-function condicaoParada(p_matriz) {
-	var i = p_matriz.length - 1;
+var simplex_type = '';
 
-	for (j = 1; j < p_matriz[i].length; j++) {
-		if (p_matriz[i][j] > 0) {
-			return true;
-		}
+var limite = '0';
+
+var table_id = 1;
+
+function condicaoParada(p_matriz) {
+
+	// se for Maximizar roda até a linha de Z não ter nenhum numero NEGATIVO
+	if(simplex_type == 'maximize') {
+        var i = p_matriz.length - 1;
+
+        for (j = 1; j < p_matriz[i].length; j++) {
+
+            if (limite == 100) {
+                return false;
+            }
+            else {
+                limite++;
+            }
+
+            if (p_matriz[i][j] > 0) {
+                return true;
+            }
+        }
+        return false;
 	}
-	return false;
+	else {
+        // se for Minimizar roda até a linha de Z não ter nenhum numero POSITIVO
+        var i = p_matriz.length - 1;
+
+        for (j = 1; j < p_matriz[i].length; j++) {
+
+            if (limite == 100) {
+                return false;
+            }
+            else {
+                limite++;
+            }
+
+            console.log(p_matriz[i][j]);
+
+            if (p_matriz[i][j] < 0) {
+                return true;
+            }
+
+        }
+        return false;
+	}
+
 }
 
 function calcMatriz(p_matriz) {
@@ -113,19 +154,6 @@ function validarCoeficientes(p_variaveis, p_restricoes) {
 	}
 }
 
-/*
-document.getElementById('minimize').addEventListener('click',function () {
-    $('#maximize').removeAttr('checked');
-    $('#minimize').attr('checked');
-
-});
-
-document.getElementById('maximize').addEventListener('click',function () {
-    $('#minimize').removeAttr('checked');
-    $('#maximize').attr('checked');
-});
-*/
-
 function atualizar() {
 	window.location.href='index.html';
 }
@@ -145,6 +173,13 @@ function criarForm(p_variaveis, p_restricoes) {
 	}
 	if (p_variaveis > 0 && p_restricoes > 0) {
 
+        if($('#maximize').is(':checked')) {
+            simplex_type = 'maximize';
+        }
+        else if($('#minimize').is(':checked')){
+            simplex_type = 'minimize';
+        }
+
 	    var aux = 10;
 
 	    if(p_variaveis > 1 && p_variaveis < 4) {
@@ -163,7 +198,14 @@ function criarForm(p_variaveis, p_restricoes) {
 		$("#form2").css('display','block');
         $("#aqui").html("<div class=\"row\"><div id='global-row-1' class=\""+col_offset+qtd_columns+col_offset+" my-4 input-group d-flex text-center text-muted\"></div></div>");
 
-        $("#global-row-1").append("<div class=\"input-group-prepend\"><span class=\"input-group-text\">Max Z = </span></div>");
+        if(simplex_type == 'maximize') {
+            var simplex_z = 'Max Z = ';
+        }
+        else {
+            var simplex_z = 'Min Z = ';
+        }
+
+        $("#global-row-1").append("<div class=\"input-group-prepend\"><span class=\"input-group-text\">"+simplex_z+"</span></div>");
 
         // Função de Z -- O laço roda o número de vezes o usuario digitou
 		for (var h = 1; h <= p_variaveis; h++) {
@@ -205,6 +247,11 @@ function printTabela(p_matriz) {
 	var linhas = restricoes+1;
 	var colunas = restricoes + variaveis+1;
 	var tabela = document.createElement("table");
+
+	tabela.id = 'table-'+table_id;
+
+	table_id++;
+
 	tabela.className = "table table-striped";
 	var thead = document.createElement("thead");
 	thead.className = "thead-light";
@@ -261,12 +308,11 @@ function printTabela(p_matriz) {
 					variavel = fracao.toFraction();
 
                     // Verificar se está na linha de Z
-                    if(chegou_noZ) {
+                    if(chegou_noZ && simplex_type == 'maximize') {
                     	var aux = (-1 * variavel);
                     	if (aux == -0) {
                     		aux = 0;
 						}
-						console.log(aux);
                         var texto = document.createTextNode(aux);
                     }
                     else {
@@ -348,18 +394,13 @@ function resolver() {
         indice++;
     }
 
-
     // Adicionando a última linha 'Z'
     var z = document.querySelectorAll(".inputZ");
     coluna = 0;
-    // antigo
+
     matriz.push(['Z']);
-    //matriz.push(['Z']);
     for (var l = 0; l < variaveis; l++) {
         matriz[linhas][l+1] = (parseFloat(z[l].value.replace(",",".")));
-
-		// Printa a linha Z negativo
-        //matriz[linhas][l+1] = (-1 * (parseFloat(z[l].value.replace(",","."))));
     }
     coluna = variaveis + 1;
     for (var m = 1; m <= restricoes; m++) {
@@ -397,9 +438,27 @@ function resolver() {
             solucao += "x<sub>"+n+"</sub> = "+numFormatado+", ";
         }
     }
-    var fracao = new Fraction((matriz[linhas][colunas])*-1);
-    var z = fracao.toFraction();
-    if(isNaN(z)) {
+
+    var fracao = new Fraction((matriz[linhas][colunas]));
+
+    if(simplex_type == 'maximize') {
+        var z = ((fracao.toFraction()) * (-1));
+	}
+	else{
+        var z = fracao.toFraction();
+	}
+
+    var i = p_matriz.length - 1;
+
+    for (j = 1; j < p_matriz[i].length; j++) {
+
+        if (p_matriz[i][j] > 0) {
+            return true;
+        }
+    }
+    return false;
+
+    if(isNaN(z) || limite == 100) {
         document.getElementById("tab").innerHTML+="<br><hr/>";
         document.getElementById("tab").innerHTML+="<p class='mt-5'><b><h3>A solução é ilimitada!</h3></b></p><br>";
         document.getElementById("btn4").style.display = 'block';
@@ -407,8 +466,10 @@ function resolver() {
 	else {
     	$('#box-btns-slider').css('display','flex');
         solucao += " e Z = "+z;
-        document.getElementById("tab").innerHTML+="<br><hr/>";
-        document.getElementById("tab").innerHTML+="<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
+        document.getElementById("tab").innerHTML+= "<br><hr/>";
+        document.getElementById("tab").innerHTML+= "<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
         document.getElementById("btn4").style.display = 'block';
+        //$('#resultado-final').append($('#table-'+(table_id - 1 )));
+        //$('#box-table-final').css('display','flex');
 	}
 }
