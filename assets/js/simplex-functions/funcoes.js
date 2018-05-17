@@ -4,49 +4,32 @@ var limite = '0';
 
 var table_id = 1;
 
+function mostrarIteracoes() {
+	$('#tab').css('display','block');
+}
+
+function mostrarSolucaoFinal() {
+    $('#tab').css('display','none');
+}
+
 function condicaoParada(p_matriz) {
 
-	// se for Maximizar roda até a linha de Z não ter nenhum numero NEGATIVO
-	if(simplex_type == 'maximize') {
-        var i = p_matriz.length - 1;
+    var i = p_matriz.length - 1;
 
-        for (j = 1; j < p_matriz[i].length; j++) {
+    for (j = 1; j < p_matriz[i].length; j++) {
 
-            if (limite == 100) {
-                return false;
-            }
-            else {
-                limite++;
-            }
-
-            if (p_matriz[i][j] > 0) {
-                return true;
-            }
+        if (limite == 100) {
+            return false;
         }
-        return false;
-	}
-	else {
-        // se for Minimizar roda até a linha de Z não ter nenhum numero POSITIVO
-        var i = p_matriz.length - 1;
-
-        for (j = 1; j < p_matriz[i].length; j++) {
-
-            if (limite == 100) {
-                return false;
-            }
-            else {
-                limite++;
-            }
-
-            console.log(p_matriz[i][j]);
-
-            if (p_matriz[i][j] < 0) {
-                return true;
-            }
-
+        else {
+            limite++;
         }
-        return false;
-	}
+
+        if (p_matriz[i][j] > 0) {
+            return true;
+        }
+    }
+    return false;
 
 }
 
@@ -78,7 +61,7 @@ function calcMatriz(p_matriz) {
 
 	var v_in = p_matriz[0][indMaior];
 	var v_out = p_matriz[indMenor][0];
-	document.getElementById("tab").innerHTML+="<p id='iteracoes'>Abaixo, na Base: Entra <strong>"+v_in.substr(0,1)+"<sub>"+v_in.substr(1,1)+"</sub></strong> e Sai <strong>"+v_out.substr(0,1)+"<sub>"+v_out.substr(1,1)+"</sub></strong></p>";
+	document.getElementById("tab").innerHTML+="<p>Abaixo, na Base: Entra <strong>"+v_in.substr(0,1)+"<sub>"+v_in.substr(1,1)+"</sub></strong> e Sai <strong>"+v_out.substr(0,1)+"<sub>"+v_out.substr(1,1)+"</sub></strong></p>";
 	p_matriz[indMenor][0] = p_matriz[0][indMaior];
 	
 	printTabela(p_matriz);
@@ -232,6 +215,9 @@ function criarForm(p_variaveis, p_restricoes) {
 
         }
 
+        $("#restricoesStatic").append("<p class='mt-5'><b><h3>X<sub>i</sub> &nbsp; ≥ &nbsp;0</h3></b></p><br>");
+        $("#restricoesStatic").css('display','flex');
+
 		document.getElementById("form1").style.display = 'none';
 		document.getElementById("in1").disabled = true;
 		document.getElementById("in2").disabled = true;
@@ -352,8 +338,10 @@ function resolver() {
     esconder(variaveis, restricoes);
 
     document.getElementById("form2").style.display = 'none';
+    document.getElementById("tab").innerHTML+="<div id='iteracoes'></div>";
+    document.getElementById("tab").innerHTML+="<hr/><br>";
     document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
-    document.getElementById("tab").innerHTML+="<hr/>";
+    document.getElementById("tab").innerHTML+="<br><hr/>";
     document.getElementById("tab").innerHTML+="<h4>Tabela Inicial</h4><br>";
     matriz = [[]];
     matriz[0][0] = 'Base';
@@ -395,7 +383,8 @@ function resolver() {
     }
 
     // Adicionando a última linha 'Z'
-    var z = document.querySelectorAll(".inputZ");
+	var z = document.querySelectorAll(".inputZ");
+
     coluna = 0;
 
     matriz.push(['Z']);
@@ -420,8 +409,29 @@ function resolver() {
         ite++;
     }
 
-    var solucao = "Solução: ";
+    var fracao = new Fraction((matriz[linhas][colunas]));
+    var solucao = "Solução Final: ";
+	var elemento = '';
 
+    for (i = 1; i < matriz.length; i++) {
+        if(matriz[i][0] == 'Z') {
+            var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
+            var numFormatado = fracao.toFraction();
+            elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>";
+			solucao += elemento;
+            //aux.push(matriz[i][0]);
+            //aux.push((-1) * matriz[i][matriz[0].length-1]);
+        }
+        else {
+            var fracao = new Fraction(matriz[i][matriz[0].length-1]);
+            var numFormatado = fracao.toFraction();
+            elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>,&nbsp;&nbsp;";
+            solucao += elemento;
+            //aux.push(matriz[i][0]);
+            //aux.push(matriz[i][matriz[0].length-1]);
+        }
+    }
+	/*
     for (var n = 1; n <= variaveis; n++) {
         var valor = 0;
         for (var o = 1; o <= restricoes; o++) {
@@ -438,25 +448,13 @@ function resolver() {
             solucao += "x<sub>"+n+"</sub> = "+numFormatado+", ";
         }
     }
-
-    var fracao = new Fraction((matriz[linhas][colunas]));
-
+*/
     if(simplex_type == 'maximize') {
         var z = ((fracao.toFraction()) * (-1));
 	}
 	else{
         var z = fracao.toFraction();
 	}
-
-    var i = p_matriz.length - 1;
-
-    for (j = 1; j < p_matriz[i].length; j++) {
-
-        if (p_matriz[i][j] > 0) {
-            return true;
-        }
-    }
-    return false;
 
     if(isNaN(z) || limite == 100) {
         document.getElementById("tab").innerHTML+="<br><hr/>";
@@ -465,11 +463,12 @@ function resolver() {
 	}
 	else {
     	$('#box-btns-slider').css('display','flex');
-        solucao += " e Z = "+z;
-        document.getElementById("tab").innerHTML+= "<br><hr/>";
-        document.getElementById("tab").innerHTML+= "<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
+        //document.getElementById("tab").innerHTML+= "<br><hr/>";
+        //document.getElementById("tab").innerHTML+= "<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>";
         document.getElementById("btn4").style.display = 'block';
-        //$('#resultado-final').append($('#table-'+(table_id - 1 )));
-        //$('#box-table-final').css('display','flex');
+        $('#resultado-final').append("<p id='solucaoFinal' class='mt-5'><b><h3>"+solucao+"</h3></b></p><br>");
+        $('#resultado-final').append($('#table-'+(table_id - 1 )));
+        $('#box-table-final').css('display','flex');
+        $('#tab').css('display','none');
 	}
 }

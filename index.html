@@ -54,14 +54,18 @@
 
                 <div id="box-btns-slider" class="row" style="display: none;">
                     <div class="col-md-6 d-flex justify-content-around">
-                        <button type="button" class="btn btn-info" id="btnIteracoes" name="ok" value="ok">
-                            <a href="#iteracoes" class="js-scroll-trigger">Visualizar Iterações</a>
-                        </button>
+                        <a href="#iteracoes" class="js-scroll-trigger">
+                            <button type="button" class="btn btn-info js-scroll-trigger" id="btnIteracoes" onclick="mostrarIteracoes();" name="ok" value="ok">
+                                Visualizar Iterações
+                            </button>
+                        </a>
                     </div>
                     <div class="col-md-6 d-flex justify-content-around">
-                        <button type="button" class="btn btn-success" id="btnSolucaoFinal" name="ok" value="ok">
-                            <a href="#solucaoFinal" class="js-scroll-trigger">Ver Solução Final</a>
-                        </button>
+                        <a href="#solucaoFinal" class="js-scroll-trigger">
+                            <button type="button" class="btn btn-success js-scroll-trigger" id="btnSolucaoFinal" onclick="mostrarSolucaoFinal();" name="ok" value="ok">
+                                Ver Solução Final
+                            </button>
+                        </a>
                     </div>
                 </div>
 
@@ -77,7 +81,7 @@
                                     </label>
                                 </a>
                             </div>
-                            <div class="form-check py-3 ml-3">
+                            <div class="form-check py-3 ml-3" style="display: none;">
                                 <a class="link-minimize" href="">
                                     <input class="form-check-input" type="radio" name="simplex" id="minimize" value="minimize">
                                     <label class="form-check-label" for="minimize">
@@ -112,12 +116,6 @@
                 </form>
 
                 <form action="" method="post" name="form2" id="form2" style="display:block;">
-
-                    <div id="box-table-final" class="row" style="display: none;">
-                        <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
-                            <div id="resultado-final" class="table-responsive"></div>
-                        </div>
-                    </div>
 
                     <div id="aqui">
 
@@ -154,17 +152,12 @@
 
                     </div>
 
-                    <div class="row" style="display: none;">
-                        <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-start text-center text-muted">
-                            <div class="form-check py-3 ml-3">
-                                <a class="link-minimize" href="">
-                                    <input class="form-check-input" type="checkbox" name="exampleRadios" id="passoApasso" value="option2">
-                                    <label class="form-check-label" for="passoApasso">
-                                        <strong>Quero ver o Passo a Passo</strong>
-                                    </label>
-                                </a>
-                            </div>
+                    <div class="row">
+
+                        <div id="restricoesStatic" style="display: none;" class="offset-md-3 col-md-6 offset-md-3 my-4 input-group d-flex text-center text-muted">
+
                         </div>
+
                     </div>
 
                     <div class="container">
@@ -187,6 +180,12 @@
 
                 <hr id="hr-pos-box-buttons-solve" class="line-breaking" style="display: none;">
 
+                <div id="box-table-final" class="row" style="display: none;">
+                    <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
+                        <div id="resultado-final" class="table-responsive"></div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="offset-md-2 col-md-8 offset-md-2 d-flex justify-content-around">
                         <div id="tab" class="table-responsive"></div>
@@ -206,15 +205,17 @@
 
         </footer>
 
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
         <!-- Simplex Functions -->
 
         <script src="assets/js/simplex-functions/fraction.js"></script>
         <script src="assets/js/simplex-functions/funcoes.js"></script>
+        <script src="assets/js/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- /Simplex Functions -->
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>
