@@ -417,6 +417,7 @@ function resolver() {
         if(matriz[i][0] == 'Z') {
             var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
             var numFormatado = fracao.toFraction();
+            console.log(numFormatado);
             elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>";
 			solucao += elemento;
             //aux.push(matriz[i][0]);

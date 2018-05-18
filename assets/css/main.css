@@ -19,9 +19,6 @@ section {
     width: 50px;
     height: 50px;
 }
-.py-title-custom {
-    padding: 5em 0em 1em 0em;
-}
 .link-maximize, .link-minimize {
     color: #6c757d!important;
     -webkit-transition: color 0.35s ease-in-out;
