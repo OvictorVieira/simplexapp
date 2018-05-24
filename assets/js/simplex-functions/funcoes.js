@@ -234,6 +234,8 @@ function printTabela(p_matriz) {
 	var colunas = restricoes + variaveis+1;
 	var tabela = document.createElement("table");
 
+    var fracao = new Fraction((p_matriz[linhas][colunas]));
+
 	tabela.id = 'table-'+table_id;
 
 	table_id++;
@@ -290,18 +292,23 @@ function printTabela(p_matriz) {
 				td.appendChild(b);
 			} else {
 				if (variavel != 'Z') {
-					var fracao = new Fraction(variavel);
-					variavel = fracao.toFraction();
-
                     // Verificar se está na linha de Z
                     if(chegou_noZ && simplex_type == 'maximize') {
-                    	var aux = (-1 * variavel);
-                    	if (aux == -0) {
-                    		aux = 0;
+                        var aux_val = 0;
+
+                        aux_val = (variavel * (- 1));
+
+                        var fracao = new Fraction(aux_val);
+                        variavel = fracao.toFraction();
+
+                    	if (variavel == -0) {
+                            variavel = 0;
 						}
-                        var texto = document.createTextNode(aux);
+                        var texto = document.createTextNode(variavel);
                     }
                     else {
+                        var fracao = new Fraction(variavel);
+                        variavel = fracao.toFraction();
                         var texto = document.createTextNode(variavel);
 					}
 
@@ -417,7 +424,6 @@ function resolver() {
         if(matriz[i][0] == 'Z') {
             var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
             var numFormatado = fracao.toFraction();
-            console.log(numFormatado);
             elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>";
 			solucao += elemento;
             //aux.push(matriz[i][0]);
@@ -426,6 +432,7 @@ function resolver() {
         else {
             var fracao = new Fraction(matriz[i][matriz[0].length-1]);
             var numFormatado = fracao.toFraction();
+            console.log(numFormatado);
             elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>,&nbsp;&nbsp;";
             solucao += elemento;
             //aux.push(matriz[i][0]);
