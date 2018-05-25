@@ -398,11 +398,9 @@ function resolver() {
     for (var l = 0; l < variaveis; l++) {
     	if(simplex_type == 'maximize') {
             matriz[linhas][l+1] = (parseFloat(z[l].value.replace(",",".")));
-            console.log(matriz[linhas][l+1]);
 		}
 		else {
             matriz[linhas][l+1] = (-1 * (parseFloat(z[l].value.replace(",","."))));
-            console.log(matriz[linhas][l+1]);
 		}
     }
     coluna = variaveis + 1;
@@ -430,20 +428,21 @@ function resolver() {
     for (i = 1; i < matriz.length; i++) {
         if(matriz[i][0] == 'Z') {
 
-        	/*
-
         	// Tentar achar o Z e fazer ele negativar se for Minimizar
 
-            if(simplex_type == 'maximize') {
+			if(i == (matriz.length-1)) {
+                if(simplex_type == 'maximize') {
+                    var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
+                }
+                else {
+                    var fracao = new Fraction(matriz[i][matriz[0].length-1]);
+                }
+			}
+			else {
                 var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
-            }
-            else {
-                var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
-            }
-            */
+			}
 
-            var fracao = new Fraction((-1) * matriz[i][matriz[0].length-1]);
-            var numFormatado = fracao.toFraction();
+			var numFormatado = fracao.toFraction();
             elemento = "<span><i>"+matriz[i][0]+"</i> = "+numFormatado+"</span>";
             solucao += elemento;
         }
@@ -454,14 +453,13 @@ function resolver() {
             solucao += elemento;
         }
     }
-	/*
+
     if(simplex_type == 'maximize') {
         var z = ((fracao.toFraction()) * (-1));
 	}
 	else{
     	var z = fracao.toFraction();
 	}
-	*/
 
     if(isNaN(z) || limite == 100) {
         document.getElementById("tab").innerHTML+="<br><hr/>";
