@@ -19,6 +19,7 @@ function calculaMaxMin(p_matriz_final, quantDec, bValues) {
     minMaxValues = [];
 
     for(let i = quantDec + 1,k=0; i < p_matriz_final[0].length -1;k++,i++){
+
         restNames.push(p_matriz_final[0][i])
         restValues.push(p_matriz_final[p_matriz_final.length -1][i])
         let auxArray = new Array;
@@ -28,8 +29,10 @@ function calculaMaxMin(p_matriz_final, quantDec, bValues) {
 
             auxArray.push((bCol/restCol)* -1);
         }
+
         let minPos = Number.POSITIVE_INFINITY;
         let maxNeg = Number.NEGATIVE_INFINITY;
+
         for(let j = 0; j< auxArray.length;j++){
             if(auxArray[j] > 0 && auxArray[j] < minPos ){
                 minPos = auxArray[j]
@@ -44,7 +47,7 @@ function calculaMaxMin(p_matriz_final, quantDec, bValues) {
             maxNeg = 0
         }
 
-        minMaxValues.push([maxNeg + bValues[k] ,minPos + bValues[k]])
+        minMaxValues.push([(maxNeg + parseInt(bValues[k])) , (minPos + parseInt(bValues[k]))])
     }
 
     var senseMatriz = [];
