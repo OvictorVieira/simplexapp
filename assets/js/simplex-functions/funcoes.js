@@ -12,6 +12,162 @@ function mostrarSolucaoFinal() {
     $('#tab').css('display','none');
 }
 
+function calculaMaxMin(p_matriz_final, quantDec, bValues) {
+
+    restNames = [];
+    restValues = [];
+    minMaxValues = [];
+
+    for(let i = quantDec + 1,k=0; i < p_matriz_final[0].length -1;k++,i++){
+        restNames.push(p_matriz_final[0][i])
+        restValues.push(p_matriz_final[p_matriz_final.length -1][i])
+        let auxArray = new Array;
+        for(let j = 1; j < p_matriz_final.length -1 ; j++){
+            let bCol     = p_matriz_final[j][p_matriz_final[0].length-1]
+            let restCol  = p_matriz_final[j][i]
+
+            auxArray.push((bCol/restCol)* -1);
+        }
+        let minPos = Number.POSITIVE_INFINITY;
+        let maxNeg = Number.NEGATIVE_INFINITY;
+        for(let j = 0; j< auxArray.length;j++){
+            if(auxArray[j] > 0 && auxArray[j] < minPos ){
+                minPos = auxArray[j]
+            }else if(auxArray[j] < 0 && auxArray[j] > maxNeg ){
+                maxNeg = auxArray[j]
+            }
+        }
+        if(minPos === Number.POSITIVE_INFINITY ){
+            minPos = 0
+        }
+        if(maxNeg === Number.NEGATIVE_INFINITY ){
+            maxNeg = 0
+        }
+
+        minMaxValues.push([maxNeg + bValues[k] ,minPos + bValues[k]])
+    }
+
+    var senseMatriz = [];
+
+    for(let i = 0; i< p_matriz_final.length-2; i++ ){
+        let auxArray  = new Array;
+        auxArray.push(restNames[i])
+        auxArray.push(restValues[i])
+        senseMatriz.push(auxArray)
+    }
+
+    for(let i = 0; i< senseMatriz.length; i++ ){
+        for(let j = 0; j < minMaxValues[0].length; j++){
+            senseMatriz[i].push(minMaxValues[i][j])
+        }
+    }
+
+    printTabelaMaxMin(senseMatriz);
+}
+
+function printTabelaMaxMin(senseMatriz) {
+    var linhas = senseMatriz.length;
+    var colunas = senseMatriz[0].length;
+    var tabela = document.createElement("table");
+    tabela.id = 'table-maxMin';
+
+    tabela.className = "table table-striped";
+    var thead = document.createElement("thead");
+    thead.className = "thead-dark";
+    var tbody=document.createElement("tbody");
+    var tr = document.createElement("tr");
+    tr.scope = "col";
+
+    cabecalho = ['Varíaveis','Preço Sombra','Menor Valor','Maior Valor'];
+
+    for (var l = 0; l < colunas; l++) {
+        var variavel = cabecalho[l];
+        var th = document.createElement("th");
+        var texto = document.createTextNode(variavel);
+        th.appendChild(texto);
+        tr.appendChild(th);
+    }
+
+    thead.appendChild(tr);
+
+    for(var n = 0; n < linhas; n++) {
+
+        var tr = document.createElement("tr");
+
+        for(var o = 0; o < colunas; o++) {
+
+            var variavel = senseMatriz[n][o];
+
+            if(variavel < 0) {
+                variavel = variavel * (-1);
+            }
+            var td = document.createElement("td");
+
+            td.appendChild(document.createTextNode(variavel));
+
+            tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+    }
+
+    tabela.appendChild(thead);
+    tabela.appendChild(tbody);
+    tabela.border = 1;
+
+    document.getElementById("valuesMaxMin").appendChild(tabela);
+    $('#box-table-MaxMin').css('display','block');
+    $('#hr-pos-box-table-final').css('display','block');
+
+}
+
+/*
+function restoSolucao(p_matriz_final, restricoes) {
+
+	// Variaveis não Basicas
+
+    matrizSolucao = [[]];
+    matrizResto = [[]];
+
+    for ($i = 0; $i < restricoes - 1 ;$i++) {
+        matrizSolucao.push(p_matriz_final[$i][0]);
+    }
+
+    var qtdeColunasTabela = matriz[0].length;
+
+    for($i = 1; $i <= qtdeColunasTabela -1;$i++) {
+    	matrizSolucao.push(p_matriz_final[0][$i]);
+    }
+
+    $countResto = matrizResto.length;
+
+    for($i = 0; $i < matrizSolucao.length; $i++) {
+        $posicao = matrizSolucao[$i].indexOf(matrizResto);
+        if ($posicao !== false)
+            delete matrizResto[$posicao];
+    }
+
+
+    for ($i = 0; $i < $countResto; $i++) {
+        if ((matrizResto[$i]) !== 'undefined') {
+            console.log (matrizResto[$i] = 0);
+        }
+	}
+
+
+}
+
+function precoSombra(p_matriz_final) {
+    $sombra = "";
+
+    for($i = ($this->nDecisoes + 1); $i <= $this->qtdeColunasTabela -1;$i++) {
+        echo '<p>'.$sombra.$this->tabela[0][$i].' = '.$this->tabela[$this->nRestricoes + 1][$i].'</p>';
+	}
+
+
+    return $sombra;
+}
+*/
+
 function condicaoParada(p_matriz) {
 
     var i = p_matriz.length - 1;
@@ -50,6 +206,7 @@ function calcMatriz(p_matriz) {
 
 	// Escolhendo qual variável básica sai
 	var menor = Number.MAX_VALUE;
+
 	var indMenor = 0;
 	for (k = 1; k < nLinhas; k++) {
 		var teste = p_matriz[k][nColunas] / p_matriz[k][indMaior]; //não testou após mudança
@@ -350,6 +507,7 @@ function resolver() {
     document.getElementById("tab").innerHTML+="<h2>Resolução</h2>";
     document.getElementById("tab").innerHTML+="<br><hr/>";
     document.getElementById("tab").innerHTML+="<h4>Tabela Inicial</h4><br>";
+
     matriz = [[]];
     matriz[0][0] = 'Base';
 
@@ -365,11 +523,13 @@ function resolver() {
     }
 
     matriz[0][matriz[0].length] = 'B';
+    bValues = [];
 
     // Adicionando linhas com as variavéis básicas. Ex: 'f1', 'f2'
     var x = document.querySelectorAll(".input");
     indice = 0;
     var coluna = 0;
+
     for (var i = 1; i < linhas; i++) {
         matriz.push(['f'+i]);
         for (var j = 1; j <= variaveis; j++) {
@@ -386,6 +546,7 @@ function resolver() {
             coluna++;
         }
         matriz[i][coluna] = x[indice].value;
+        bValues.push(x[indice].value);
         indice++;
     }
 
@@ -403,7 +564,9 @@ function resolver() {
             matriz[linhas][l+1] = (-1 * (parseFloat(z[l].value.replace(",","."))));
 		}
     }
+
     coluna = variaveis + 1;
+
     for (var m = 1; m <= restricoes; m++) {
         matriz[linhas][coluna] = 0;
         coluna++;
@@ -422,13 +585,13 @@ function resolver() {
     }
 
     var fracao = new Fraction((matriz[linhas][colunas]));
-    var solucao = "Solução Final: ";
+    var solucao = "Variáveis Básicas: ";
 	var elemento = '';
 
     for (i = 1; i < matriz.length; i++) {
         if(matriz[i][0] == 'Z') {
 
-        	// Tentar achar o Z e fazer ele negativar se for Minimizar
+        	// Achar o Z e fazer ele negativar se for Minimizar
 
 			if(i == (matriz.length-1)) {
                 if(simplex_type == 'maximize') {
@@ -453,13 +616,15 @@ function resolver() {
             solucao += elemento;
         }
     }
-
+ 
     if(simplex_type == 'maximize') {
         var z = ((fracao.toFraction()) * (-1));
 	}
 	else{
     	var z = fracao.toFraction();
 	}
+
+    calculaMaxMin(matriz, variaveis, bValues);
 
     if(isNaN(z) || limite == 100) {
         document.getElementById("tab").innerHTML+="<br><hr/>";
