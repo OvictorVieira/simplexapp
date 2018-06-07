@@ -82,8 +82,7 @@ Código | Título | Tarefa | Situação |
 5 | Demonstrar passo a passo | Demonstrar ao usuário as alterações na tabela causada pelas iterações do método simplex. | Concluído|
 6  | Tabela de sensibilidade | Demonstrar ao usuário a tabela de sensibilidade. |Concluído|
 
-=====================================================================================================================
-
+======================================
 
 **1. NOME DOS INTEGRANTES DO GRUPO**
 
