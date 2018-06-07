@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿# SimplexAPP
 
 Repositório para a implementação do algoritmo Simplex .
@@ -83,60 +82,7 @@ Código | Título | Tarefa | Situação |
 5 | Demonstrar passo a passo | Demonstrar ao usuário as alterações na tabela causada pelas iterações do método simplex. | Concluído|
 6  | Tabela de sensibilidade | Demonstrar ao usuário a tabela de sensibilidade. |Concluído|
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
+=====================================================================================================================
 
 
 **1. NOME DOS INTEGRANTES DO GRUPO**
@@ -164,4 +110,3 @@ Código | Título | Tarefa | Situação |
 | Tecnologia WEB | HTML5, CSS3, Bootstrap 4 |
 | IDE | PhpStorm 2018.1|
 | Servidor Web | Heroku |
->>>>>>> e5d656d3dc257e4bf0c47c7002ad43795e4949bd
