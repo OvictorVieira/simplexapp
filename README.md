@@ -15,8 +15,7 @@ O Simplex permite que se encontre valores ideais em situações em que diversos 
 
 - Javascript
 - HTML
-- CSS 
-- Heroku para hospedagem e versionamento
+- CSS
 
 ## Nota de realease a ser publicado
 
