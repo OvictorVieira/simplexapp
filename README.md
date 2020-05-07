@@ -20,7 +20,7 @@ O Simplex permite que se encontre valores ideais em situações em que diversos 
 
 ## Nota de realease a ser publicado
 
-###Simplex
+### Simplex
 
 - Algoritmo Simplex para problemas de maximização.
 - Algoritmo Simplex para problemas de minimização.
@@ -28,18 +28,18 @@ O Simplex permite que se encontre valores ideais em situações em que diversos 
 - Tabela de Sensibilidade.
 
 
-##Entradas personalizadas para:
+## Entradas personalizadas para:
 
-###Simplex
+### Simplex
 
 - Limite máximo de iterações
 - Tipo de Simplex (MAX ou MIN)
 - Quantidade de variáveis e restrições
 
 
-##Datas Importantes
+## Datas Importantes
 
-###Simplex
+### Simplex
 
 Datas | Eventos
 --------- | ------
@@ -53,7 +53,7 @@ Datas | Eventos
 07/06/18  | Atualizando README
 
 
-##Compatibilidade
+## Compatibilidade
 
 Requisitos | Ferramentas
 --------- | ------
@@ -69,9 +69,9 @@ Back-End    | Javascript
 Editor de Texto  | Sublime
 Servidor Web    | https://simplexapp.herokuapp.com/
 
-##Atividades Realizadas no Período
+## Atividades Realizadas no Período
 
-###Simplex
+### Simplex
 
 Código | Título | Tarefa | Situação | 
 --------- | ------ | -------| -------| 
